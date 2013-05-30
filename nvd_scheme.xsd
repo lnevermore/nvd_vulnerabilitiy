@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-16"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="nvd" type="nvdType" />
+  <xsd:complexType name="nvdType">
+    <xsd:sequence>
+      <xsd:element name="entry" type="entryType" />
+    </xsd:sequence>
+    <xsd:attribute name="xsi:schemaLocation" type="xsd:string" />
+    <xsd:attribute name="pub_date" type="xsd:dateTime" />
+    <xsd:attribute name="nvd_xml_version" type="xsd:decimal" />
+  </xsd:complexType>
+  <xsd:complexType name="entryType">
+    <xsd:sequence>
+      <xsd:element name="vuln:vulnerable-configuration" type="vuln:vulnerable-configurationType" />
+      <xsd:element name="vuln:vulnerable-software-list" type="vuln:vulnerable-software-listType" />
+      <xsd:element name="vuln:cve-id" type="xsd:string" />
+      <xsd:element name="vuln:published-datetime" type="xsd:dateTime" />
+      <xsd:element name="vuln:last-modified-datetime" type="xsd:dateTime" />
+      <xsd:element name="vuln:cvss" type="vuln:cvssType" />
+      <xsd:element name="vuln:cwe" type="vuln:cweType" />
+      <xsd:element name="vuln:references" type="vuln:referencesType" />
+      <xsd:element name="vuln:summary" type="xsd:string" />
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:string" />
+  </xsd:complexType>
+  <xsd:complexType name="vuln:referencesType">
+    <xsd:sequence>
+      <xsd:element name="vuln:source" type="xsd:string" />
+      <xsd:element name="vuln:reference" type="vuln:referenceType" />
+    </xsd:sequence>
+    <xsd:attribute name="xml:lang" type="xsd:string" />
+    <xsd:attribute name="reference_type" type="xsd:string" />
+  </xsd:complexType>
+  <xsd:complexType name="vuln:referenceType">
+    <xsd:attribute name="href" type="xsd:string" />
+    <xsd:attribute name="xml:lang" type="xsd:string" />
+  </xsd:complexType>
+  <xsd:complexType name="vuln:cweType">
+    <xsd:attribute name="id" type="xsd:string" />
+  </xsd:complexType>
+  <xsd:complexType name="vuln:cvssType">
+    <xsd:sequence>
+      <xsd:element name="cvss:base_metrics" type="cvss:base_metricsType" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="cvss:base_metricsType">
+    <xsd:sequence>
+      <xsd:element name="cvss:score" type="xsd:decimal" />
+      <xsd:element name="cvss:access-vector" type="xsd:string" />
+      <xsd:element name="cvss:access-complexity" type="xsd:string" />
+      <xsd:element name="cvss:authentication" type="xsd:string" />
+      <xsd:element name="cvss:confidentiality-impact" type="xsd:string" />
+      <xsd:element name="cvss:integrity-impact" type="xsd:string" />
+      <xsd:element name="cvss:availability-impact" type="xsd:string" />
+      <xsd:element name="cvss:source" type="xsd:string" />
+      <xsd:element name="cvss:generated-on-datetime" type="xsd:dateTime" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="vuln:vulnerable-software-listType">
+    <xsd:sequence>
+      <xsd:element name="vuln:product" type="xsd:string" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="vuln:vulnerable-configurationType">
+    <xsd:sequence>
+      <xsd:element name="cpe-lang:logical-test" type="cpe-lang:logical-testType" />
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:string" />
+  </xsd:complexType>
+  <xsd:complexType name="cpe-lang:logical-testType">
+    <xsd:sequence>
+      <xsd:element name="cpe-lang:fact-ref" type="cpe-lang:fact-refType" />
+    </xsd:sequence>
+    <xsd:attribute name="negate" type="xsd:boolean" />
+    <xsd:attribute name="operator" type="xsd:string" />
+  </xsd:complexType>
+  <xsd:complexType name="cpe-lang:fact-refType">
+    <xsd:attribute name="name" type="xsd:string" />
+  </xsd:complexType>
+</xsd:schema>
