@@ -5,6 +5,7 @@ import java.net.URL
 import java.io.{InputStreamReader, BufferedReader}
 
 /**
+ * the second version of "searching algorithm". Now unused. May be used later
  * @author matveyka
  */
 class CvePrecedentParser(list : List[TableCveElement]) extends PrecedentParser{

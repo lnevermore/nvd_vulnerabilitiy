@@ -3,23 +3,30 @@ package ru.nsu.ccfit.malkov.db
 import ru.nsu.ccfit.malkov.model.TableCveElement
 import java.sql.{SQLException, Statement, PreparedStatement, Connection}
 
-/*
- * Created with IntelliJ IDEA.
- * User: malkov
- * Date: 4/23/13
- * Time: 4:42 PM
- * To change this template use File | Settings | File Templates.
+/**
+ * adapter for saving parser entities and links texts
+ * @param user db to set
+ * @param passwd user's db pass
  */
 class PostgreDatabaseAdapter(user: String, passwd: String) {
 
   val driver = "org.postgresql.Driver"
   Class.forName(driver)
 
+  /**
+   * string resources with inserts
+   */
   val insertElementPattern = "INSERT INTO elements VALUES (nextval('elements_id_seq'),?, ?);"
   val insertLinkPattern = "INSERT INTO linktexts VALUES (nextval('linktexts_id_seq'), ?, ?);"
 
   val manager = new TransactionManager(user, passwd)
 
+
+  /**
+   * add single element to db.
+   * @param elem CVe element to save
+   * @param linksTexts array with strings(link texts)
+   */
   def addElements(elem: TableCveElement, linksTexts: List[String]) {
     manager.execute(new TransactionCallback {
       def doIntoTransaction(connection: Connection) {

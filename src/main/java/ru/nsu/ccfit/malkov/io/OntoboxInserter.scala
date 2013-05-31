@@ -4,6 +4,7 @@ import ru.nsu.ccfit.malkov.model.VirusPrecedent
 
 /**
  @author : malkov
+          inserts ready entities to ontobox db
  */
 class OntoboxInserter(list : List[VirusPrecedent]) {
   def insertOne(one : VirusPrecedent) {

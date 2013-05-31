@@ -2,16 +2,17 @@ package ru.nsu.ccfit.malkov.db
 
 import java.sql.{SQLException, DriverManager}
 
-/*
- * Created with IntelliJ IDEA.
- * User: malkov
- * Date: 4/23/13
- * Time: 4:53 PM
- * To change this template use File | Settings | File Templates.
+/**
+ * @author malkov
+ * @param user user db to set
+ * @param passwd user's db pass
  */
 class TransactionManager(user: String, passwd: String) {
 
-
+  /**
+   * exetuce single transaction with connection
+   * @param callback. callback, which called when connection had taken.
+   */
   def execute(callback: TransactionCallback) {
     val connection = DriverManager.getConnection(TransactionManager.url, user, passwd)
     try {
@@ -35,6 +36,9 @@ class TransactionManager(user: String, passwd: String) {
   }
 }
 
+/**
+ * object class for apply method
+ */
 object TransactionManager {
   val url = "jdbc:postgresql://localhost:5432/diploma?rewriteBatchedStatements=true"
 }

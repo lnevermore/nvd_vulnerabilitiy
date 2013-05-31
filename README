@@ -1,1 +1,32 @@
-This file was created by IntelliJ IDEA 12.0.4 for binding GitHub repository
+Diploma bachelor project written by malkov
+
+pre installation :
+1. You should install and configure PostgreSQL database service.
+"sudo apt-get install postgresql"
+2. You should install and configure MAVEN nad set M2_HOME enviroment variable.
+
+3. After that, go to "sql" folder and type in shell "sh diploma_posgre_init.sh "your configured user" ".
+        /* Your user must have permissions to drop and create databases and tables. */
+        3 times type your user's postgresql password. When script wrote "tables recreated" go to next step
+
+4. Database setup. than go to root folder . type "mvn clean install". Wait for downloading libs and scala compilers.
+    when all is finish? go to step 5.
+
+5. go to bin folder and find .jar file. run it with params jar "file".jar ${1} ${2} ${3} where :
+            NOTE!!:::: ${1} - file to parsed. Now in project there are only one NVD FILE "nvdcve-2012.xml"
+            ${2} - postgresql username
+            ${3} - postgresql user's passwd
+
+    Run it and program should works. It starts to parse xml file and search for links in internet.
+Your PC must have internet connection.
+
+
+Additional info:
+    1. About files.
+        aot-eng.csv contains very big dictionary, which can be used with Pavel Stepanov's language expression lagnuage.
+        cveitems.xml = contains big xml with cve vulnerabilities. It's contains vulnerabilities which is well knows now.
+        nvdcve-2012.xml = contains big xml with cve vulnerabilities. It's ok data.
+        nvd_scheme - contains XMLScheme for validation nvdcve vulnerabilities.
+        README = this README
+        the_last_one_new.mvx - ontobox db which should be user and filled later.
+        pom.xml - maven script and building project and making jar file.

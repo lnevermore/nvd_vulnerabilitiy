@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS elements;
+DROP TABLE IF EXISTS linktexts;
+
+CREATE TABLE elements(id SERIAL PRIMARY KEY NOT NULL, name TEXT NOT NULL, summary TEXT NOT NULL);
+CREATE TABLE linktexts(id SERIAL PRIMARY KEY NOT NULL, elem_id INT references elements(id), data TEXT NOT NULL);

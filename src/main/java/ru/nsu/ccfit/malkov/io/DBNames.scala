@@ -1,6 +1,7 @@
 package ru.nsu.ccfit.malkov.io
 
 /**
+ * singleton with dbnames for ontobox
  @author : malkov
  */
 object DBNames {

@@ -9,6 +9,7 @@ import java.io.{FileWriter, File}
 
 /**
  * @author matveyka
+ * class for show all entities to expert using XML
  */
 class XmlWriter() {
 
@@ -33,6 +34,10 @@ class XmlWriter() {
   }
 }
 
+/**
+ * implictit class for implicit transformation.
+ * @see this::virusToXml method
+ */
 abstract class XmlVirus {
   val name : String
   val symptom: String

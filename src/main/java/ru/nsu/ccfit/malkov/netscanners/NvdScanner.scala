@@ -7,6 +7,8 @@ import xml.pull.EvElemEnd
 import xml.pull.EvElemStart
 
 /**
+ * class for parsiog xml from nvd and get all text links
+ * So, this class implements "searching algorithm"
  @author : malkov
  */
 class NvdScanner(filename : String) extends CveScanner(filename){
@@ -15,6 +17,11 @@ class NvdScanner(filename : String) extends CveScanner(filename){
   var isProduct = false
   var isSummary = false
 
+
+  /**
+   * method for stax xml parsing
+   * @param event
+   */
   override def matchItem(event: XMLEvent) {
     event match {
       case EvElemStart(_, "entry", id, _) => {
@@ -41,11 +48,17 @@ class NvdScanner(filename : String) extends CveScanner(filename){
     }
   }
 
+  /**
+   * @see CveScanner::scanFile()
+   */
   override def scanFile() {
     val p = new XMLEventReader(Source.fromFile(filename))
     p.foreach(matchItem(_))
   }
 
+  /**
+  * @see CveScanner::run()
+  */
   override def run() {
     scanFile()
   }

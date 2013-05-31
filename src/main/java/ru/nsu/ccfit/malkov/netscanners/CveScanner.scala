@@ -16,6 +16,8 @@ import java.util
 
 
 /**
+ * class for parsiog xml from cve and get all text links
+ * So, this class implements "searching algorithm"
  * @author matveyka
  */
 class CveScanner(filename: String) extends Scanner {
@@ -23,8 +25,14 @@ class CveScanner(filename: String) extends Scanner {
   var isDescStart = false
   var addingList: TableCveElement = new TableCveElement()
 
-  val adapter = new PostgreDatabaseAdapter("root", "root")
+  var user = ""
+  var passwd = ""
+  var adapter : PostgreDatabaseAdapter = null
 
+  /**
+   * method for stax xml parsing
+   * @param event
+   */
   def matchItem(event: XMLEvent) {
     event match {
       case EvElemStart(_, "item", name, _) => {
@@ -54,6 +62,9 @@ class CveScanner(filename: String) extends Scanner {
     }
   }
 
+  /**
+   * starts to scan whole file
+   */
   override def scanFile() {
     val p = new XMLEventReader(Source.fromFile(filename))
     p.foreach(matchItem(_))
@@ -64,6 +75,11 @@ class CveScanner(filename: String) extends Scanner {
     scanFile()
   }
 
+  /**
+   * part of "searching algorithm" which delete all unnecessary elements and content
+   * @param elements which should be analysed
+   * @param removingElements elements which should be deleted
+   */
   def removeRecursively(elements: Elements, removingElements: Elements) {
     val iterator: util.ListIterator[Element] = removingElements.listIterator()
     while (iterator.hasNext) {
@@ -75,6 +91,12 @@ class CveScanner(filename: String) extends Scanner {
     elements.removeAll(removingElements)
   }
 
+  /**
+   * part of "searching algorithm" which delete all unnecessary elements and content
+   * @param element for analysing
+   * @param forbidden list with forbidden tags
+   * @param builder StringBuilder for appending result text
+   */
   def removeTags(element: Element, forbidden: List[String], builder: StringBuilder) {
     if (!forbidden.contains(element.tagName())) {
 
@@ -108,6 +130,11 @@ class CveScanner(filename: String) extends Scanner {
 
   }
 
+  /**
+   * find all necessary text in <body> tag
+   * @param element Body element
+   * @return string with all needed text
+   */
   def findTextIntoBody(element: Element): String = {
     val list = List[String]("ul", "ol", "script", "style", "noscript", "footer", "header", "input")
     val builder = new StringBuilder
@@ -116,6 +143,10 @@ class CveScanner(filename: String) extends Scanner {
     builder.toString()
   }
 
+  /**
+   * process single element after XML parsing
+   * @param elem parsed element
+   */
   def processItem(elem: TableCveElement) {
 
     println("element started to get links")
@@ -142,6 +173,19 @@ class CveScanner(filename: String) extends Scanner {
     adapter.addElements(elem, textList)
 
     println("element added to db")
+  }
+
+  def setPostgreUser(user: String) = {
+    this.user = user
+    this
+  }
+  def setPostgrePasswd(passwd: String) = {
+    this.passwd = passwd
+    this
+  }
+  def initializeAdapter() = {
+    adapter = new PostgreDatabaseAdapter(user, passwd)
+    this
   }
 }
 
