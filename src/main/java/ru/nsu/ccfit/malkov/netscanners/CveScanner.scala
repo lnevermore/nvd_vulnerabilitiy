@@ -10,7 +10,7 @@ import ru.nsu.ccfit.malkov.parser.CvePrecedentParser
 import org.jsoup.{HttpStatusException, Jsoup}
 import org.jsoup.nodes.{Node, TextNode, Element, Document}
 import ru.nsu.ccfit.malkov.db.PostgreDatabaseAdapter
-import java.io.IOException
+import java.io.{File, FileWriter, IOException}
 import org.jsoup.select.Elements
 import java.util
 
@@ -151,6 +151,13 @@ class CveScanner(filename: String) extends Scanner {
 
     println("element started to get links")
 
+    new File("./results/") mkdir()
+    val file = new File("./results/" +elem.name)
+    file.delete()
+    file createNewFile()
+
+    val writer = new FileWriter(file)
+
     var textList = List[String]()
     elem.references.foreach(ref => {
       try {
@@ -159,6 +166,7 @@ class CveScanner(filename: String) extends Scanner {
         val refResult: String = findTextIntoBody(body)
 
         println(ref + " says : " + refResult)
+        writer.write(ref + " : " + "\n" + refResult + "\n\n\n")
 
         textList ::= refResult
 
@@ -168,6 +176,8 @@ class CveScanner(filename: String) extends Scanner {
 
           println(e.getLocalizedMessage)
         }
+      } finally {
+        writer.close
       }
     })
     adapter.addElements(elem, textList)

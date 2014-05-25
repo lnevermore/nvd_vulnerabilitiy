@@ -26,7 +26,7 @@ class NvdScanner(filename : String) extends CveScanner(filename){
     event match {
       case EvElemStart(_, "entry", id, _) => {
         addedElement = new TableCveElement()
-        addedElement.name = id.get("id").getOrElse(null).toString()
+        addedElement.name = id.get("name").getOrElse(null).toString()
       }
       case EvElemEnd(_, "entry") => {
         processItem(addedElement)
@@ -38,12 +38,12 @@ class NvdScanner(filename : String) extends CveScanner(filename){
         if (isSummary) { addedElement.description = text}
       }
       case EvElemEnd(_, "product") => {isProduct = false}
-      case EvElemStart(_, "reference", data, _) => {
-        val href = data.get("href")
+      case EvElemStart(_, "ref", data, _) => {
+        val href = data.get("url")
         if (!href.isEmpty) { addedElement.references ::= href.get.toString()}
       }
-      case EvElemStart(_, "summary", _, _) => { isSummary = true }
-      case EvElemEnd(_, "summary") => { isSummary = false }
+      case EvElemStart(_, "descript", _, _) => { isSummary = true }
+      case EvElemEnd(_, "descript") => { isSummary = false }
       case (_) => {}
     }
   }
